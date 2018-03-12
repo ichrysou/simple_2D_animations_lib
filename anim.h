@@ -20,6 +20,6 @@ void vectors_scale(vector *vectors_buffer, int num_of_vectors, float factor, vec
 void vectors_rotate_and_scale(vector *vectors_buffer, int num_of_vectors, int angle, float factor, vector center_of_rotation, vector center_of_scaling);
 void vectors_translate(vector *vectors_buffer, int num_of_vectors, vector dir);
 // create vectors from bitmap
-int initilize_vector_list(const unsigned char *bitmap, int h, int w, vector *vectors, vector offset);
+int initilize_vector_list(unsigned char *bitmap, int h, int w, vector *vectors, vector offset);
 
 #endif

@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #define PI 3.14159265
-#define VECTORS_EQ(u, v) (u.x == v.x && u.y == v.y)
+#define VECTORS_EQ(u, v) ((u.x == v.x) && (u.y == v.y))
 
 vector vector_add(vector a, vector b) {
     vector res;
@@ -59,7 +59,7 @@ vector vector_rotate_and_scale(vector vec, int angle, float factor, vector cente
 
 void vectors_translate(vector *vectors_buffer, int num_of_vectors, vector dir) {
     vector tmp[num_of_vectors];
-    memset(&tmp[0], 0, sizeof(vector) * num_of_vectors);
+
     for (int i = 0; i < num_of_vectors; i++) {
         tmp[i] = vector_translate(vectors_buffer[i], dir);
     }
@@ -68,7 +68,6 @@ void vectors_translate(vector *vectors_buffer, int num_of_vectors, vector dir) {
 
 void vectors_rotate(vector *vectors_buffer, int num_of_vectors, int angle, vector center_of_rotation) {
     vector tmp[num_of_vectors];
-    memset(&tmp[0], 0, sizeof(vector) * num_of_vectors);
 
     for (int i = 0; i < num_of_vectors; i++) {
         tmp[i] = vector_rotate(vectors_buffer[i], angle, center_of_rotation);
@@ -79,8 +78,6 @@ void vectors_rotate(vector *vectors_buffer, int num_of_vectors, int angle, vecto
 
 void vectors_scale(vector *vectors_buffer, int num_of_vectors, float factor, vector center_of_scaling) {
     vector tmp[num_of_vectors];
-    memset(&tmp[0], 0, sizeof(vector) * num_of_vectors);
-
 
     for (int i = 0; i < num_of_vectors; i++) {
         tmp[i] = vector_scale(vectors_buffer[i], factor, center_of_scaling);
@@ -90,8 +87,6 @@ void vectors_scale(vector *vectors_buffer, int num_of_vectors, float factor, vec
 
 void vectors_rotate_and_scale(vector *vectors_buffer, int num_of_vectors, int angle, float factor, vector center_of_rotation, vector center_of_scaling) {
     vector tmp[num_of_vectors];
-    memset(&tmp[0], 0, sizeof(vector) * num_of_vectors);
-
 
     for (int i = 0; i < num_of_vectors; i++) {
         tmp[i] = vector_rotate_and_scale(vectors_buffer[i], angle, factor, center_of_rotation, center_of_scaling);
@@ -100,7 +95,7 @@ void vectors_rotate_and_scale(vector *vectors_buffer, int num_of_vectors, int an
 }
 
 
-int initilize_vector_list(const unsigned char *bitmap, int h, int w, vector *vectors, vector offset) {
+int initilize_vector_list(unsigned char *bitmap, int h, int w, vector *vectors, vector offset) {
     uint8_t byte = 0;
     uint16_t byteWidth = (w + 7) / 8;
 
@@ -112,10 +107,9 @@ int initilize_vector_list(const unsigned char *bitmap, int h, int w, vector *vec
             else byte = bitmap[i / 8 + j * byteWidth ];
             if (byte & 0x80) {
                 // translate relative x,y (i, j) to absolute x,y
-                vector *ptr = (vector *)malloc(sizeof(vector));
-                ptr->x = i + offset.x;
-                ptr->y = j + offset.y;
-                vectors[cntr++] = *ptr;
+                vectors[cntr].x = i + offset.x;
+                vectors[cntr].y = j + offset.y;
+                cntr++;
             }
         }
     }
